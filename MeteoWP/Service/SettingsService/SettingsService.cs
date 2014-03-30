@@ -1,4 +1,6 @@
 ﻿using System.IO.IsolatedStorage;
+using GalaSoft.MvvmLight.Messaging;
+using MeteoWP.Message;
 
 namespace MeteoWP.Service.SettingsService
 {
@@ -13,7 +15,13 @@ namespace MeteoWP.Service.SettingsService
         {
             IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
 
-            citySetting = new Setting<string>(settings, "City", string.Empty);
+            citySetting = new Setting<string>(settings, "City", string.Empty, false);
+
+            Messenger.Default.Register<SaveSettingsMessage>(this, s =>
+            {
+                settings.Save();
+                Messenger.Default.Send(new GlobalNavigationMessage(ViewList.MainPage));
+            });
         }
 
         #region ISettingsService Members

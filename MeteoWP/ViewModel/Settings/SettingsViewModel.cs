@@ -7,29 +7,22 @@ namespace MeteoWP.ViewModel.Settings
 {
     public class SettingsViewModel : NavigationViewModelBase, ISettingsViewModel
     {
+        private readonly ISettingsService settingsService;
         private string city;
 
-        public SettingsViewModel()
+        public SettingsViewModel(ISettingsService settingsService)
         {
-            var settings = SimpleIoc.Default.GetInstance<ISettingsService>();
-
-            City = settings.City;
-
-            Messenger.Default.Register<SaveSettingsMessage>(this, s =>
-            {
-                settings.City = City;
-                Messenger.Default.Send(new GlobalNavigationMessage(ViewList.MainPage));
-            });
+            this.settingsService = settingsService;
         }
 
         #region Implementation of ISettingsViewModel
 
         public string City
         {
-            get { return city; }
+            get { return settingsService.City; }
             set
             {
-                city = value;
+                settingsService.City = value;
                 RaisePropertyChanged(() => City);
             }
         }

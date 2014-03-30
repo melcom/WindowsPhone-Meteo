@@ -14,11 +14,15 @@ namespace MeteoWP.ViewModel
 {
     public class MainViewModel : NavigationViewModelBase
     {
+        private readonly IWeatherApiService weatherApiService;
+        private readonly ISettingsService settingsService;
         private string currentCity;
         private IDisplayWeather displayWeather;
 
-        public MainViewModel()
+        public MainViewModel(IWeatherApiService weatherApiService, ISettingsService settingsService)
         {
+            this.weatherApiService = weatherApiService;
+            this.settingsService = settingsService;
             ForecastCommand = new RelayCommand(() => Messenger.Default.Send(new GlobalNavigationMessage(ViewList.Previsions, new List<UriParameter>
             {
                 new UriParameter("city", currentCity)
@@ -29,14 +33,12 @@ namespace MeteoWP.ViewModel
 
         protected override async Task LoadData(IDictionary<string, string> queryString)
         {
-            IWeatherApi api = SimpleIoc.Default.GetInstance<IWeatherApiService>().CurrentApi;
-            var settings = SimpleIoc.Default.GetInstance<ISettingsService>();
             try
             {
-                if (!string.IsNullOrEmpty(settings.City))
+                if (!string.IsNullOrEmpty(settingsService.City))
                 {
-                    currentCity = settings.City;
-                    DisplayWeather = await api.GetCurrentWeather(settings.City);
+                    currentCity = settingsService.City;
+                    DisplayWeather = await weatherApiService.CurrentApi.GetCurrentWeather(currentCity);
                 }
             }
             catch (Exception)

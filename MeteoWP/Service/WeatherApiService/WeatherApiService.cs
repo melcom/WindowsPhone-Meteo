@@ -11,7 +11,13 @@ namespace MeteoWP.Service.WeatherApiService
 {
     public class WeatherApiService : IWeatherApiService
     {
+        private readonly ISettingsService settingsService;
         private IWeatherApi api;
+
+        public WeatherApiService(ISettingsService settingsService)
+        {
+            this.settingsService = settingsService;
+        }
 
         #region Implementation of IRssApiService
 
@@ -19,9 +25,7 @@ namespace MeteoWP.Service.WeatherApiService
         {
             get
             {
-                var settings = SimpleIoc.Default.GetInstance<ISettingsService>();
-
-                if (string.IsNullOrEmpty(settings.City))
+                if (string.IsNullOrEmpty(settingsService.City))
                 {
                     MessageBox.Show(AppResources.ConfigureCity);
                     Messenger.Default.Send(new GlobalNavigationMessage(ViewList.Settings));

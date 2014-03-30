@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight.Ioc;
 using MeteoWP.Service.WeatherApiService;
 using WeatherBackend.Api;
 
@@ -9,7 +8,13 @@ namespace MeteoWP.ViewModel.Forecast
 {
     public class ForecastViewModel : NavigationViewModelBase, IForecastViewModel
     {
+        private readonly IWeatherApiService weatherApiService;
         private IForecastWeather forecastWeather;
+
+        public ForecastViewModel(IWeatherApiService weatherApiService)
+        {
+            this.weatherApiService = weatherApiService;
+        }
 
         #region IForecastViewModel Members
 
@@ -29,10 +34,9 @@ namespace MeteoWP.ViewModel.Forecast
         {
             string city = queryString["city"];
 
-            IWeatherApi api = SimpleIoc.Default.GetInstance<IWeatherApiService>().CurrentApi;
             try
             {
-                ForecastWeather = await api.GetForecastWeather(city);
+                ForecastWeather = await weatherApiService.CurrentApi.GetForecastWeather(city);
             }
             catch (Exception)
             {

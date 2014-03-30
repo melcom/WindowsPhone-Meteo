@@ -34,8 +34,8 @@ namespace MeteoWP.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
-            SimpleIoc.Default.Register<IWeatherApiService, WeatherApiService>();
             SimpleIoc.Default.Register<ISettingsService, SettingsService>();
+            SimpleIoc.Default.Register<IWeatherApiService, WeatherApiService>();
             SimpleIoc.Default.Register<ISettingsViewModel, SettingsViewModel>();
             SimpleIoc.Default.Register<IForecastViewModel, ForecastViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
