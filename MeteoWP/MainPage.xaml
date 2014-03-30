@@ -1,0 +1,76 @@
+﻿<view:ViewBase
+    x:Class="MeteoWP.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:MeteoWP.View"
+    xmlns:converter="clr-namespace:MeteoWP.Converter"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding MainPage, Source={StaticResource ViewModelLocator}}">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock
+                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+                Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0" />
+            <TextBlock
+                Text="{Binding Path=LocalizedResources.CurrentWeather, Source={StaticResource LocalizedStrings}}"
+                Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" />
+        </StackPanel>
+
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                       Text="{Binding DisplayWeather.Name}" FontSize="48" />
+            <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Margin="10"
+                       Text="{Binding Path=LocalizedResources.Temperature, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Margin="10"
+                       Text="{Binding DisplayWeather.Temp}" />
+            <TextBlock Grid.Column="0" Grid.Row="2" HorizontalAlignment="Right" Margin="10"
+                       Text="{Binding Path=LocalizedResources.TemperatureMax, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10"
+                       Text="{Binding DisplayWeather.TempMax}" />
+            <TextBlock Grid.Column="0" Grid.Row="3" HorizontalAlignment="Right" Margin="10"
+                       Text="{Binding Path=LocalizedResources.TemperatureMin, Source={StaticResource LocalizedStrings}}" />
+            <TextBlock Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10"
+                       Text="{Binding DisplayWeather.TempMin}" />
+            <TextBlock Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                       Text="{Binding DisplayWeather.Description}" />
+            <Image Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                   Source="{Binding Converter={StaticResource IconConverter}, Path=DisplayWeather.Icon}" />
+            <Button Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                    Command="{Binding ForecastCommand}"
+                    Content="{Binding Path=LocalizedResources.Forecast, Source={StaticResource LocalizedStrings}}" />
+
+        </Grid>
+    </Grid>
+
+</view:ViewBase>
