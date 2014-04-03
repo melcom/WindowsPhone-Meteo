@@ -8,7 +8,6 @@ namespace MeteoWP.ViewModel.Settings
     public class SettingsViewModel : NavigationViewModelBase, ISettingsViewModel
     {
         private readonly ISettingsService settingsService;
-        private string city;
 
         public SettingsViewModel(ISettingsService settingsService)
         {
